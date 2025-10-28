@@ -1,0 +1,9 @@
+node_modules/
+/.env
+server/.env
+movie-book/.env
+dist/
+.DS_Store
+/.cache
+/.vscode
+node_modules
