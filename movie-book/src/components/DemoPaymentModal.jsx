@@ -94,7 +94,7 @@ const DemoPaymentModal = ({ open, onClose, onSuccess, amount }) => {
                   value={name}
                   onChange={(e)=>setName(e.target.value)}
                   onFocus={()=>setFocused('name')}
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2"
+                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 text-black"
                   placeholder="Full name"
                 />
               </label>
@@ -109,7 +109,7 @@ const DemoPaymentModal = ({ open, onClose, onSuccess, amount }) => {
                   onChange={(e)=>setNumber(formatNumber(e.target.value))}
                   onFocus={()=>setFocused('number')}
                   inputMode="numeric"
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 tracking-wider"
+                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 tracking-wider text-black"
                   placeholder="#### #### #### ####"
                 />
               </label>
@@ -122,7 +122,7 @@ const DemoPaymentModal = ({ open, onClose, onSuccess, amount }) => {
                     onChange={(e)=>setExpiry(formatExpiry(e.target.value))}
                     onFocus={()=>setFocused('expiry')}
                     inputMode="numeric"
-                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2"
+                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 text-black"
                     placeholder="MM/YY"
                   />
                 </label>
@@ -134,7 +134,7 @@ const DemoPaymentModal = ({ open, onClose, onSuccess, amount }) => {
                     onChange={(e)=>setCvc(formatCvc(e.target.value))}
                     onFocus={()=>setFocused('cvc')}
                     inputMode="numeric"
-                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2"
+                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 text-black"
                     placeholder="CVC"
                   />
                 </label>

@@ -5,8 +5,14 @@ import { clerkClient } from "@clerk/clerk-sdk-node";
 // API Controller Function to Get User Bookings
 export const getUserBookings = async (req, res) => {
     try {
-        const user = req.auth().userId;
-        const bookings = await Booking.find({ user })
+        // Support both forms: req.auth may be a function (from @clerk/express) or an object
+        const authInfo = typeof req.auth === 'function' ? req.auth() : req.auth;
+        const userId = authInfo?.userId || authInfo?.user || null;
+        if (!userId) {
+            return res.status(401).json({ success: false, message: 'Not authenticated' });
+        }
+
+        const bookings = await Booking.find({ user: userId })
             .populate({
                 path: "show",
                 populate: { path: "movie" }
