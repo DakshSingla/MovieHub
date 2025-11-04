@@ -3,9 +3,10 @@ import mongoose from "mongoose";
 const connectDB = async () => {
     const rawUri = process.env.MONGODB_URI;
     if (!rawUri) {
-        console.error('MONGODB_URI is not set. Please set process.env.MONGODB_URI (for example in .env or in the hosting environment).');
-        // Exit early so the caller knows the service cannot start without DB
-        process.exit(1);
+        // Throw an error instead of calling process.exit so the caller can
+        // handle the failure and serverless platforms don't abruptly terminate
+        // the process with an opaque exit code.
+        throw new Error('MONGODB_URI is not set. Please set process.env.MONGODB_URI (for example in .env or in the hosting environment).');
     }
 
     const dbName = 'Movie_Ticket_Booking';

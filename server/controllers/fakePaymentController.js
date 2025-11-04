@@ -1,7 +1,7 @@
 import Booking from '../models/Booking.js';
 import axios from 'axios';
 import User from '../models/User.js';
-import { sendBookingEmail } from '../utils/sendBookingEmail.js';
+import sendEmail from '../configs/nodemailer.js';
 import { inngest } from '../inngest/index.js';
 
 export const fakePayBooking = async (req, res) => {
@@ -39,8 +39,19 @@ export const fakePayBooking = async (req, res) => {
     const userEmail = clerkUser?.email_addresses?.[0]?.email_address;
     console.log('About to send booking email to:', userEmail);
     if (userEmail) {
-      await sendBookingEmail(booking, { ...clerkUser, email: userEmail, _id: booking.user });
-      console.log('sendBookingEmail called');
+      try {
+        const subject = `Your booking for ${booking.show.movie.title} is confirmed`;
+        const seats = Array.isArray(booking.bookedseats) ? booking.bookedseats.join(', ') : '';
+        const body = `<p>Hi ${clerkUser?.first_name || ''},</p>
+          <p>Your booking is confirmed.</p>
+          <p><strong>Movie:</strong> ${booking.show.movie.title}</p>
+          <p><strong>Seats:</strong> ${seats}</p>
+          <p><strong>Total:</strong> ₹${booking.amount}</p>`;
+        await sendEmail({ to: userEmail, subject, body });
+        console.log('sendEmail (nodemailer) called');
+      } catch (err) {
+        console.error('Error sending booking email via sendEmail:', err);
+      }
     }
   // Always return booking with populated show and movie
   const populatedBooking = await Booking.findById(booking._id).populate({ path: 'show', populate: { path: 'movie' } });

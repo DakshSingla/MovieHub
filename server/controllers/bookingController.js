@@ -1,7 +1,7 @@
 import Booking from "../models/Booking.js";
 import Show from "../models/Show.js";
 import User from "../models/User.js";
-import {sendBookingEmail} from '../utils/sendBookingEmail.js';
+import sendEmail from '../configs/nodemailer.js';
 import { inngest } from '../inngest/index.js';
 
 const checkSeatsAvailability = async (showId, selectedSeats) => {
@@ -54,7 +54,16 @@ export const createBooking = async (req, res)=> {
         const user = await User.findById(userId);
         if (user && populatedBooking && populatedBooking.user.toString() === user._id.toString()) {
             try {
-                await sendBookingEmail(populatedBooking, user);
+                // Use central nodemailer config. sendEmail is a safe no-op when
+                // DISABLE_EMAILS=true or SMTP creds are not configured.
+                const subject = `Your booking for ${populatedBooking.show.movie.title} is confirmed`;
+                const seats = Array.isArray(populatedBooking.bookedseats) ? populatedBooking.bookedseats.join(', ') : '';
+                const body = `<p>Hi ${user.name || ''},</p>
+                <p>Your booking is confirmed.</p>
+                <p><strong>Movie:</strong> ${populatedBooking.show.movie.title}</p>
+                <p><strong>Seats:</strong> ${seats}</p>
+                <p><strong>Total:</strong> ₹${populatedBooking.amount}</p>`;
+                await sendEmail({ to: user.email, subject, body });
             } catch (emailErr) {
                 console.error('Error sending booking email:', emailErr);
                 // continue without failing the booking
