@@ -43,6 +43,8 @@ export const createBooking = async (req, res)=> {
             amount: showData.showPrice * selectedSeats.length,
             bookedseats: selectedSeats,
             isPaid: false,
+            // Set expiry 10 minutes from now; MongoDB TTL index will remove it
+            expiresAt: new Date(Date.now() + 10 * 60 * 1000),
         })
 
         // Populate booking with show and movie before using it in emails or events
