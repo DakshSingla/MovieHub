@@ -1,3 +1,4 @@
+// Placeholder check to ensure file exists; no changes applied if not required.
 import React, { useState } from 'react';
 
 const DemoPaymentModal = ({ open, onClose, onSuccess, amount }) => {

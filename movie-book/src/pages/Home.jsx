@@ -28,12 +28,11 @@ const Home = () => {
   }, []);
 
   return (
-    <>
+    <div>
       <HeroSection movie={latestMovie} loading={loading} />
-      {/* All Movies section removed per request */}
       <FeaturesSection/>
       <TrailerSection/>
-    </>
+    </div>
   )
 }
 

@@ -39,11 +39,11 @@ const ListBookings = () => {
 
   return !isLoading ?(
     <>
-      <Title text1="List" text2="Bookings"/><br/>
-      <div className='max-w-5xl overflow-x-auto ml-6'>
+      <Title text1="List" text2="Bookings"/>
+      <div className='max-w-5xl overflow-x-auto glass-card neon-border rounded-xl'>
         <table className='w-full border-collapse rounded-md overflow-hidden text-nowrap'>
           <thead>
-            <tr className='bg-primary/20 text-left text-white'>
+            <tr className='bg-white/5 text-left text-white'>
               <th className='p-2 font-medium pl-5'>User Name</th>
               <th className='p-2 font-medium'>Movie Name</th>
               <th className='p-2 font-medium'>Show Time</th>
@@ -53,7 +53,7 @@ const ListBookings = () => {
           </thead>
           <tbody className='text-sm font-light'>
             {bookings.map((item, index) =>(
-              <tr key={index} className='border-b border-primary/20 bg-primary/5 even:bg-primary/10'>
+              <tr key={index} className='border-b border-white/5 bg-white/[.02] even:bg-white/[.04]'>
                 <td className='p-2 min-w-45 pl-5'>{item.user?.name || "Unknown User"}</td>
                 <td className='p-2'>{item.show?.movie?.title || '-'}</td>
                 <td className='p-2'>{item.show?.showDateTime ? dateFormat(item.show.showDateTime) : '-'}</td>

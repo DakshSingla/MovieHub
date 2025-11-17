@@ -55,9 +55,9 @@ const MyBookings = () => {
       <div>
         <BlurCircle bottom='0px ' left='600px'/>
       </div>  
-      <h1 className='text-lg font-semibold mb-4'>My Booking</h1>  
+      <h1 className='text-lg font-semibold mb-4 text-glow'>My Bookings</h1>  
       {bookings.map((item,index)=>(        
-        <div key={index} className='flex flex-col md:flex-row justify-between bg-primary/8 border border-primary/20 rounded-lg mt-4 p-2 max-w-3xl'>
+        <div key={index} className='flex flex-col md:flex-row justify-between glass-card neon-border rounded-xl mt-4 p-2 max-w-3xl'>
           <div className='flex flex-col md:flex-row'>
             <img src={image_base_url + (item.show?.movie?.poster_path || item.show?.poster_path || '')} alt='' className='md:max-w-45 aspect-video h-40 object-cover object-bottom rounded'/>
             <div className='flex flex-col p-4'>
@@ -72,7 +72,7 @@ const MyBookings = () => {
               {!item.isPaid && (
                 <>
                   <button
-                    className='bg-primary px-4 py-1.5 mb-3 txt-sm rounded-full font-medium cursor-pointer'
+                    className='btn-neon px-4 py-1.5 mb-3 text-sm'
                     onClick={() => {
                       setSelectedBooking(item);
                       setShowDemoModal(true);

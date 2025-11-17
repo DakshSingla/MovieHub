@@ -6,7 +6,7 @@ import { useUser, useAuth } from "@clerk/clerk-react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 
-axios.defaults.baseURL = import.meta.env.VITE_BASE_URL;
+axios.defaults.baseURL = (import.meta.env.VITE_BASE_URL || '').trim();
 
 export const AppContext = createContext();
 
@@ -14,6 +14,7 @@ export const AppProvider = ({ children }) => {
     // null = unknown/loading, true/false = resolved
     const [isAdmin, setIsAdmin] = useState(null);
     const [shows, setShows] = useState([]);
+    const [showsLoading, setShowsLoading] = useState(true);
     const [favouriteMovies, setFavouriteMovies] = useState([]);
     const image_base_url = import.meta.env.VITE_TMDB_IMAGE_BASE_URL;
     const { user } = useUser();
@@ -41,16 +42,26 @@ export const AppProvider = ({ children }) => {
         }
     }
 
+    const CACHE_KEY = 'shows_cache_v1';
+    const CACHE_TTL_MS = 5 * 60 * 1000; // 5 minutes
+
     const fetchShows = async () => {
+        setShowsLoading(true);
         try {
-            const { data } = await axios.get('/api/show/all');
+            const { data } = await axios.get('/api/show/all', { timeout: 10000 });
             if (data.success) {
-                setShows(data.shows);
+                setShows(data.shows || []);
+                try {
+                    const payload = { ts: Date.now(), shows: data.shows || [] };
+                    sessionStorage.setItem(CACHE_KEY, JSON.stringify(payload));
+                } catch {}
             } else {
                 toast.error(data.message);
             }
         } catch (error) {
             console.error(error);
+        } finally {
+            setShowsLoading(false);
         }
     };
 
@@ -72,6 +83,20 @@ export const AppProvider = ({ children }) => {
     };
 
     useEffect(() => {
+        // hydrate from cache first for instant render
+        try {
+            const cached = sessionStorage.getItem(CACHE_KEY);
+            if (cached) {
+                const parsed = JSON.parse(cached);
+                if (parsed && Array.isArray(parsed.shows)) {
+                    const fresh = Date.now() - (parsed.ts || 0) < CACHE_TTL_MS;
+                    setShows(parsed.shows);
+                    setShowsLoading(!fresh);
+                    if (!fresh) fetchShows();
+                    return;
+                }
+            }
+        } catch {}
         fetchShows();
     }, []);
     useEffect(() => {
@@ -89,6 +114,7 @@ export const AppProvider = ({ children }) => {
         navigate,
         isAdmin,
         shows,
+        showsLoading,
     favouriteMovies,
     fetchFavouriteMovies,
         image_base_url,

@@ -106,13 +106,16 @@ export const addShow = async(req , res) => {
 
 export const getShows = async (req , res) => {
     try{
-        const shows = await Show.find({showDateTime : {$gte: new Date()}}).populate('movie').sort({ showDateTime : 1 });
+        const shows = await Show.find({ showDateTime: { $gte: new Date() } })
+            .populate('movie')
+            .sort({ showDateTime: 1 })
+            .lean();
         console.log(`getShows: found ${Array.isArray(shows) ? shows.length : 0} show documents`);
         // Return only unique movies for shows
         const uniqueMoviesMap = new Map();
         shows.forEach(show => {
-            if (show.movie && !uniqueMoviesMap.has(show.movie._id)) {
-                uniqueMoviesMap.set(show.movie._id, show.movie);
+            if (show.movie && !uniqueMoviesMap.has(String(show.movie._id))) {
+                uniqueMoviesMap.set(String(show.movie._id), show.movie);
             }
         });
         const responseShows = Array.from(uniqueMoviesMap.values())
@@ -131,8 +134,7 @@ export const getShow = async(req , res) => {
     try{
         const {movieId} = req.params;
 
-        const shows = await Show.find({movie : movieId , showDateTime : { $gte: new
-            Date() }})
+        const shows = await Show.find({ movie: movieId, showDateTime: { $gte: new Date() } }).lean();
 
             const movie = await Movie.findById(movieId);
             const dateTime = {};
