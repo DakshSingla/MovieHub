@@ -6,7 +6,7 @@ This folder contains the React-based frontend for the Movie Ticket Booking appli
 ## Key Concepts & Functionality
 - **React Components:** Modular UI for movies, seat selection, booking, payment modal, admin dashboard, etc.
 - **Context API:** Centralized state management using `AppContext` for user, bookings, and API calls.
-- **Demo Payment Flow:** Stripe payment is paused; demo modal is used for payment simulation.
+- **Demo Payment Flow:** Demo modal is used for payment simulation.
 - **API Integration:** Communicates with backend via REST API endpoints for movies, shows, bookings, and payments.
 - **Admin Features:** Admin dashboard for adding shows, viewing bookings, and managing movies.
 - **Routing:** Uses React Router for navigation between pages (Home, Movies, MyBookings, Admin, etc.).

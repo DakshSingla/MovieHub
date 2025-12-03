@@ -7,7 +7,7 @@ This folder contains the Express.js backend for the Movie Ticket Booking applica
 - **Express.js API:** RESTful endpoints for movies, shows, bookings, payments, and admin actions.
 - **MongoDB Models:** Data models for User, Movie, Show, Booking.
 - **Clerk Authentication:** Uses Clerk for secure user authentication and role management.
-- **Demo Payment Flow:** Stripe integration is paused; demo payment endpoint (`/api/booking/fakepay/:bookingId`) marks bookings as paid and sends confirmation emails.
+- **Demo Payment Flow:** Demo payment endpoint (`/api/booking/fakepay/:bookingId`) marks bookings as paid and sends confirmation emails.
 - **Email Notifications:** Sends booking confirmation emails using Nodemailer and Gmail App Passwords.
 - **Admin Features:** Endpoints for adding shows, listing bookings, and managing movies.
 - **Error Handling & Logging:** Robust error handling and logging for debugging and reliability.
@@ -42,7 +42,6 @@ This modular structure keeps code organized, makes it easy to maintain, and allo
 - **TMDB_API_KEY**: For fetching movie data from TMDB
 - **EMAIL_USER**: Gmail address for Nodemailer
 - **EMAIL_PASS**: Gmail App Password for Nodemailer
-<!-- Stripe integration removed from repository; demo payment endpoint is used instead -->
 
 ---
 For frontend details, see the `PROJECT_OVERVIEW.md` in the `movie-book` folder.

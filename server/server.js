@@ -11,13 +11,11 @@ import showoRouter from './routes/showRoutes.js';
 import bookingRouter from './routes/bookingRoutes.js';
 import adminRouter from './routes/adminRoutes.js';
 import userRouter from './routes/userRoutes.js';
-// Stripe removed from project - webhook controller deleted
 
 const app = express();
 const port = 3000;
 
 await connectDB();
-// Stripe webhook route removed (Stripe integration disabled)
 
 app.use(express.json())
 app.use(cors())

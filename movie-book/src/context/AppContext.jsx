@@ -6,7 +6,7 @@ import { useUser, useAuth } from "@clerk/clerk-react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 
-axios.defaults.baseURL = (import.meta.env.VITE_BASE_URL || '').trim();
+axios.defaults.baseURL = import.meta.env.VITE_BASE_URL?.replace(/\/$/, '');
 
 export const AppContext = createContext();
 

@@ -82,7 +82,6 @@ export const createBooking = async (req, res)=> {
             console.error('Failed to send Inngest event for booking:', booking._id, err);
         }
 
-        // DEMO PAYMENT MODE: Do not use Stripe, just return the populated booking for the client
         return res.json({ success: true, booking: populatedBooking });
     } catch (error) {
         console.error(error.message);
