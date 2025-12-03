@@ -1,0 +1,42 @@
+<svg width="640" height="160" viewBox="0 0 640 160" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Movie-Hub logo">
+  <defs>
+    <linearGradient id="g" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="60%" stop-color="#ffeaa7"/>
+      <stop offset="100%" stop-color="#ffd26a"/>
+    </linearGradient>
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Background is transparent; logo designed for dark UI -->
+  <g transform="translate(16,20)">
+    <!-- Reel circle -->
+    <circle cx="52" cy="60" r="52" fill="#EDEDED"/>
+    <!-- Reel holes -->
+    <circle cx="52" cy="24" r="8" fill="#070A0F"/>
+    <circle cx="52" cy="96" r="8" fill="#070A0F"/>
+    <circle cx="16" cy="60" r="8" fill="#070A0F"/>
+    <circle cx="88" cy="60" r="8" fill="#070A0F"/>
+    <circle cx="30" cy="36" r="8" fill="#070A0F"/>
+    <circle cx="74" cy="36" r="8" fill="#070A0F"/>
+    <circle cx="30" cy="84" r="8" fill="#070A0F"/>
+    <circle cx="74" cy="84" r="8" fill="#070A0F"/>
+
+    <!-- M monogram -->
+    <text x="52" y="66" text-anchor="middle" font-family="Inter, Segoe UI, system-ui, -apple-system, sans-serif" font-weight="800" font-size="36" fill="#070A0F">M</text>
+  </g>
+
+  <!-- Wordmark (tight, larger, single flow) -->
+  <g transform="translate(144,96)">
+    <text y="0" font-family="Inter, Segoe UI, system-ui, -apple-system, sans-serif" font-weight="900" font-size="56" fill="#FFFFFF" letter-spacing="0.2">
+      <tspan>Movie-</tspan>
+      <tspan fill="url(#g)" filter="url(#glow)">Hub</tspan>
+    </text>
+  </g>
+</svg>

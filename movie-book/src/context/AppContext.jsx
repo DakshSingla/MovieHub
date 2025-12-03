@@ -45,6 +45,10 @@ export const AppProvider = ({ children }) => {
     const CACHE_KEY = 'shows_cache_v1';
     const CACHE_TTL_MS = 5 * 60 * 1000; // 5 minutes
 
+    const invalidateShowsCache = () => {
+        try { sessionStorage.removeItem(CACHE_KEY); } catch {}
+    };
+
     const fetchShows = async () => {
         setShowsLoading(true);
         try {
@@ -109,14 +113,16 @@ export const AppProvider = ({ children }) => {
     const value = {
         axios,
         fetchIsAdmin,
+        fetchShows,
         user,
         getToken,
         navigate,
         isAdmin,
         shows,
         showsLoading,
-    favouriteMovies,
-    fetchFavouriteMovies,
+        favouriteMovies,
+        fetchFavouriteMovies,
+        invalidateShowsCache,
         image_base_url,
     };
 

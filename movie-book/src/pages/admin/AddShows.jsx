@@ -8,7 +8,7 @@ import { useAppContext } from '../../context/AppContext';
 import toast from 'react-hot-toast';
 
 const AddShows = () => {
-    const {axios, getToken, user, image_base_url} = useAppContext(); 
+    const {axios, getToken, user, image_base_url, fetchShows, invalidateShowsCache} = useAppContext(); 
     const currency = import.meta.env.VITE_CURRENCY
     const [nowPlayingMovies, setNowPlayingMovies] = useState([]);
     const [selectedMovie, setSelectedMovie] = useState(null); 
@@ -73,6 +73,9 @@ const AddShows = () => {
         })
         if(data.success){
           toast.success(data.message);
+          // Invalidate cache and refresh global shows so Movies page updates immediately
+          invalidateShowsCache();
+          fetchShows();
           setSelectedMovie(null);
           setDateTimeSelection({});
           setDateTimeInput("");

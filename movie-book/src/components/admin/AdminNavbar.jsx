@@ -6,7 +6,7 @@ const AdminNavbar = () => {
   return (
     <div className='flex items-center justify-between px-6 md:x-10 h-16 nav-glass'>
       <Link to="/">
-        <img src={assets.logo} alt='logo' className='w-36 h-auto'/>
+        <img src={assets.brandLogo} alt='Movie-Hub' className='w-48 md:w-56 h-auto'/>
       </Link>
     </div>
   )
