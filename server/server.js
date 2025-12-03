@@ -19,56 +19,6 @@ const port = 3000;
 await connectDB();
 // Stripe webhook route removed (Stripe integration disabled)
 
-// --- Cleanup expired unpaid bookings (moved inline; no new files) ---
-// Scans for expired unpaid bookings, releases seats on the show, and deletes the booking.
-// This runs periodically as a fallback because MongoDB TTL deletes documents directly
-// and Inngest scheduled jobs may not run in all environments.
-const cleanupExpiredBookings = async () => {
-	try {
-		const now = new Date();
-		const expiredBookings = await Booking.find({ isPaid: false, expiresAt: { $lte: now } });
-		if (!expiredBookings || expiredBookings.length === 0) return;
-
-		console.log(`[cleanup] Found ${expiredBookings.length} expired unpaid booking(s) - releasing seats and deleting bookings`);
-
-		for (const booking of expiredBookings) {
-			try {
-				const showId = booking.show;
-				const show = await Show.findById(showId);
-				if (show) {
-					(booking.bookedseats || []).forEach((seat) => {
-						if (show.occupiedSeats && Object.prototype.hasOwnProperty.call(show.occupiedSeats, seat)) {
-							delete show.occupiedSeats[seat];
-						}
-					});
-					show.markModified && show.markModified('occupiedSeats');
-					await show.save();
-				} else {
-					console.warn(`[cleanup] Show not found for booking ${booking._id} (show ${showId})`);
-				}
-
-				await Booking.findByIdAndDelete(booking._id);
-				console.log(`[cleanup] Released seats and deleted booking ${booking._id}`);
-			} catch (err) {
-				console.error('[cleanup] Error processing booking', booking._id, err && err.message ? err.message : err);
-			}
-		}
-	} catch (err) {
-		console.error('[cleanup] Failed to fetch expired bookings', err && err.message ? err.message : err);
-	}
-};
-
-const startCleanupInterval = (intervalMs = 60 * 1000) => {
-	cleanupExpiredBookings().catch((e) => console.error('[cleanup] initial run failed', e));
-	const id = setInterval(() => {
-		cleanupExpiredBookings().catch((e) => console.error('[cleanup] periodic run failed', e));
-	}, intervalMs);
-	return () => clearInterval(id);
-};
-
-// Start the cleanup interval on server boot.
-startCleanupInterval();
-
 app.use(express.json())
 app.use(cors())
 app.use(clerkMiddleware())
