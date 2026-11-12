@@ -3,6 +3,7 @@ import Show from "../models/Show.js";
 import User from "../models/User.js";
 import sendEmail from '../configs/nodemailer.js';
 import { inngest } from '../inngest/index.js';
+import { sendBookingEmail } from "../utils/sendBookingEmail.js";
 
 const checkSeatsAvailability = async (showId, selectedSeats) => {
     try{
@@ -66,9 +67,9 @@ export const createBooking = async (req, res)=> {
                 await sendEmail({ to: user.email, subject, body });
             } catch (emailErr) {
                 console.error('Error sending booking email:', emailErr);
-                // continue without failing the booking
             }
         }
+
         selectedSeats.map((seat) => {
             showData.occupiedSeats[seat] = true;
         })
@@ -84,8 +85,8 @@ export const createBooking = async (req, res)=> {
 
         return res.json({ success: true, booking: populatedBooking });
     } catch (error) {
-        console.error(error.message);
-        return res.json({ error: "Internal server error" });
+        console.error('Error creating booking:', error);
+        return res.status(500).json({ success: false, message: error.message });
     }
 }
 

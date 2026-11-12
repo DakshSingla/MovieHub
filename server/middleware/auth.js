@@ -1,8 +1,8 @@
-import { clerkClient } from "@clerk/express";
+import { clerkClient, getAuth } from "@clerk/express";
 
 export const protectAdmin = async (req, res, next) => {
     try {
-        const userId = req.auth?.userId;
+        const { userId } = getAuth(req);
         if (!userId) {
             return res.status(401).json({ success: false, message: "not authorized" });
         }
@@ -15,6 +15,7 @@ export const protectAdmin = async (req, res, next) => {
 
         next();
     } catch (error) {
-        return res.status(401).json({ success: false, message: "not authorized" });
+        console.error("Failed to verify admin access:", error);
+        return res.status(500).json({ success: false, message: "Unable to verify admin access" });
     }
 };
